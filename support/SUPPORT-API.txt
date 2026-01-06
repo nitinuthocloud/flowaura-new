@@ -1,0 +1,664 @@
+================================================================================
+SUPPORT OPERATIONS DASHBOARD - API DOCUMENTATION
+================================================================================
+
+ENDPOINT: support-api.php
+METHOD: GET
+
+--------------------------------------------------------------------------------
+REQUEST PARAMETERS (Query String)
+--------------------------------------------------------------------------------
+| Parameter | Type   | Required | Default   | Description                      |
+|-----------|--------|----------|-----------|----------------------------------|
+| view      | string | No       | manager   | View mode (manager, agent)       |
+| period    | string | No       | 24h       | Time period (24h, 7d, 30d)       |
+| agent_id  | string | No       | null      | Filter by specific agent         |
+| priority  | string | No       | all       | Filter by priority               |
+| status    | string | No       | all       | Filter by ticket status          |
+| queue     | string | No       | all       | Filter by queue                  |
+| sla       | string | No       | all       | Filter by SLA state              |
+| customer  | string | No       | all       | Filter by customer               |
+| product   | string | No       | all       | Filter by product                |
+
+--------------------------------------------------------------------------------
+RESPONSE PAYLOAD STRUCTURE
+--------------------------------------------------------------------------------
+
+{
+  "success": true,
+  "data": {
+    "kpis": {
+      "totalTickets": {
+        "value": 152,
+        "subtitle": "All time"
+      },
+      "openTickets": {
+        "value": 76,
+        "subtitle": "Currently active"
+      },
+      "avgFirstResponseTime": {
+        "value": "55m",
+        "subtitle": "Target: < 1h"
+      },
+      "avgTotalResolutionTime": {
+        "value": "4.2h",
+        "subtitle": "Resolution time"
+      },
+      "slaBreaches": {
+        "value": 127,
+        "subtitle": "Needs attention"
+      },
+      "reopens": {
+        "value": 5,
+        "subtitle": "Resolution quality"
+      }
+    },
+
+    "smallKPIs": {
+      "avgTicketsPerHour": "18/hr",
+      "frtCompliance": "92%",
+      "csatScore": 4.6,
+      "reopenRate": "3.2%",
+      "unassigned": 5,
+      "firstContactResolution": "89%"
+    },
+
+    "statusDistribution": {
+      "chartData": [
+        { "label": "New", "value": 12, "color": "#3b82f6" },
+        { "label": "In Progress", "value": 34, "color": "#6366f1" },
+        { "label": "Waiting Customer", "value": 18, "color": "#8b5cf6" },
+        { "label": "Resolved", "value": 76, "color": "#15803d" },
+        { "label": "Closed", "value": 8, "color": "#6b7280" },
+        { "label": "Reopened", "value": 4, "color": "#dc2626" }
+      ]
+    },
+
+    "slaPerformance": [
+      {
+        "priority": "Critical",
+        "withinSLA": 8,
+        "atRisk": 2,
+        "breached": 1,
+        "total": 11
+      },
+      {
+        "priority": "High",
+        "withinSLA": 24,
+        "atRisk": 5,
+        "breached": 3,
+        "total": 32
+      },
+      {
+        "priority": "Medium",
+        "withinSLA": 38,
+        "atRisk": 7,
+        "breached": 4,
+        "total": 49
+      },
+      {
+        "priority": "Low",
+        "withinSLA": 52,
+        "atRisk": 3,
+        "breached": 1,
+        "total": 56
+      }
+    ],
+
+    "agentScorecards": [
+      {
+        "id": "agent-1",
+        "name": "Rajesh K",
+        "role": "L2 Support",
+        "score": 92,
+        "scoreStatus": "excellent",
+        "timeMetrics": {
+          "avgAllocationTime": "2m",
+          "avgFirstResponseTime": "6m",
+          "avgResolutionTime": "2.1h"
+        },
+        "ticketStats": {
+          "open": 12,
+          "resolved": 45,
+          "reopened": 2
+        },
+        "problemSignals": [],
+        "status": "Excellent performance"
+      },
+      {
+        "id": "agent-2",
+        "name": "Priya S",
+        "role": "L1 Support",
+        "score": 72,
+        "scoreStatus": "needs_attention",
+        "timeMetrics": {
+          "avgAllocationTime": "5m",
+          "avgFirstResponseTime": "12m",
+          "avgResolutionTime": "3.2h"
+        },
+        "ticketStats": {
+          "open": 18,
+          "resolved": 38,
+          "reopened": 5
+        },
+        "problemSignals": ["Slow first response"],
+        "status": "warning"
+      },
+      {
+        "id": "agent-3",
+        "name": "Amit P",
+        "role": "L1 Support",
+        "score": 55,
+        "scoreStatus": "critical",
+        "timeMetrics": {
+          "avgAllocationTime": "8m",
+          "avgFirstResponseTime": "18m",
+          "avgResolutionTime": "4.8h"
+        },
+        "ticketStats": {
+          "open": 22,
+          "resolved": 28,
+          "reopened": 8
+        },
+        "problemSignals": ["High reopen rate", "Needs coaching"],
+        "status": "critical"
+      },
+      {
+        "id": "agent-4",
+        "name": "Sneha V",
+        "role": "L2 Support",
+        "score": 85,
+        "scoreStatus": "good",
+        "timeMetrics": {
+          "avgAllocationTime": "3m",
+          "avgFirstResponseTime": "7m",
+          "avgResolutionTime": "2.3h"
+        },
+        "ticketStats": {
+          "open": 14,
+          "resolved": 42,
+          "reopened": 3
+        },
+        "problemSignals": [],
+        "status": "Strong performer"
+      }
+    ],
+
+    "agentComparison": [
+      { "name": "Rajesh K", "score": 92, "resolutionTime": 2.1, "color": "#15803d" },
+      { "name": "Priya S", "score": 72, "resolutionTime": 3.2, "color": "#eab308" },
+      { "name": "Amit P", "score": 55, "resolutionTime": 4.8, "color": "#dc2626" },
+      { "name": "Sneha V", "score": 85, "resolutionTime": 2.3, "color": "#3b82f6" }
+    ],
+
+    "teamPerformance": [
+      {
+        "agent": "Rajesh Kumar",
+        "role": "L2",
+        "open": 12,
+        "resolved": 45,
+        "reopened": 2,
+        "reopenPercent": "4.4%",
+        "avgFRT": "6 min",
+        "avgRT": "2.1 hrs",
+        "slaBreach": 1,
+        "slaBreachClass": "success",
+        "csat": "4.7/5",
+        "status": "Active",
+        "statusClass": "success"
+      },
+      {
+        "agent": "Priya Sharma",
+        "role": "L1",
+        "open": 18,
+        "resolved": 38,
+        "reopened": 5,
+        "reopenPercent": "13.2%",
+        "avgFRT": "12 min",
+        "avgRT": "3.2 hrs",
+        "slaBreach": 4,
+        "slaBreachClass": "warning",
+        "csat": "4.3/5",
+        "status": "Active",
+        "statusClass": "success"
+      },
+      {
+        "agent": "Amit Patel",
+        "role": "L1",
+        "open": 22,
+        "resolved": 28,
+        "reopened": 8,
+        "reopenPercent": "28.6%",
+        "avgFRT": "18 min",
+        "avgRT": "4.8 hrs",
+        "slaBreach": 7,
+        "slaBreachClass": "danger",
+        "csat": "3.9/5",
+        "status": "Active",
+        "statusClass": "success"
+      },
+      {
+        "agent": "Sneha Verma",
+        "role": "L2",
+        "open": 14,
+        "resolved": 42,
+        "reopened": 3,
+        "reopenPercent": "7.1%",
+        "avgFRT": "7 min",
+        "avgRT": "2.3 hrs",
+        "slaBreach": 2,
+        "slaBreachClass": "success",
+        "csat": "4.6/5",
+        "status": "Active",
+        "statusClass": "success"
+      },
+      {
+        "agent": "Vikram Singh",
+        "role": "L1",
+        "open": 9,
+        "resolved": 35,
+        "reopened": 4,
+        "reopenPercent": "11.4%",
+        "avgFRT": "10 min",
+        "avgRT": "2.9 hrs",
+        "slaBreach": 3,
+        "slaBreachClass": "warning",
+        "csat": "4.4/5",
+        "status": "On Leave",
+        "statusClass": "gray"
+      }
+    ],
+
+    "reopenAnalysis": {
+      "chartData": [
+        { "reason": "Incomplete Fix", "count": 5 },
+        { "reason": "Root Cause", "count": 3 },
+        { "reason": "Bad Comm", "count": 2 },
+        { "reason": "Customer", "count": 1 },
+        { "reason": "Alert", "count": 1 }
+      ]
+    },
+
+    "mostReopenedTickets": [
+      {
+        "ticketId": "TKT-10189",
+        "customer": "TechCorp Solutions",
+        "reopenCount": 3,
+        "reopenCountClass": "danger",
+        "status": "Critical",
+        "statusClass": "danger"
+      },
+      {
+        "ticketId": "TKT-10201",
+        "customer": "CloudFast Inc",
+        "reopenCount": 2,
+        "reopenCountClass": "warning",
+        "status": "Open",
+        "statusClass": "info"
+      },
+      {
+        "ticketId": "TKT-10215",
+        "customer": "DataSys Ltd",
+        "reopenCount": 2,
+        "reopenCountClass": "warning",
+        "status": "Open",
+        "statusClass": "info"
+      }
+    ],
+
+    "resolvedTickets": [
+      {
+        "ticketId": "TKT-10236",
+        "customer": "DataSys Ltd",
+        "subject": "Billing inquiry",
+        "priority": "Low",
+        "priorityClass": "info",
+        "resolvedBy": "Amit Patel",
+        "resolutionTime": "3.5h",
+        "csat": "5/5",
+        "csatClass": "success"
+      },
+      {
+        "ticketId": "TKT-10241",
+        "customer": "SecureCloud Inc",
+        "subject": "SSL certificate expiring",
+        "priority": "Medium",
+        "priorityClass": "warning",
+        "resolvedBy": "Sneha Verma",
+        "resolutionTime": "2.3h",
+        "csat": "4/5",
+        "csatClass": "success"
+      }
+    ],
+
+    "slaTrends": {
+      "missedSLA": 12,
+      "frtTrend": {
+        "labels": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        "data": [10, 9, 8, 7, 8, 9, 7]
+      },
+      "resolutionTrend": {
+        "labels": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        "data": [3.2, 2.9, 2.7, 2.5, 2.4, 2.6, 2.3]
+      }
+    },
+
+    "complianceTrend": {
+      "labels": ["Week 1", "Week 2", "Week 3", "Week 4"],
+      "data": [92, 93, 94, 95]
+    },
+
+    "waitingTimeTrend": {
+      "labels": ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00", "24:00"],
+      "data": [45, 38, 55, 62, 48, 40, 35]
+    },
+
+    "shiftHandover": [
+      {
+        "ticketId": "TKT-10245",
+        "currentOwner": "Priya Sharma",
+        "status": "In Progress",
+        "statusClass": "info",
+        "priority": "High",
+        "priorityClass": "warning",
+        "nextAction": "Follow up with DevOps",
+        "handoverNotes": "Waiting for DB restoration confirmation"
+      },
+      {
+        "ticketId": "TKT-10246",
+        "currentOwner": "Amit Patel",
+        "status": "Pending Customer",
+        "statusClass": "gray",
+        "priority": "Medium",
+        "priorityClass": "warning",
+        "nextAction": "Customer to provide logs",
+        "handoverNotes": "Sent instructions via email"
+      },
+      {
+        "ticketId": "TKT-10247",
+        "currentOwner": "Rajesh Kumar",
+        "status": "In Progress",
+        "statusClass": "info",
+        "priority": "Critical",
+        "priorityClass": "danger",
+        "nextAction": "Deploy hotfix",
+        "handoverNotes": "Patch ready, needs approval"
+      }
+    ],
+
+    "priorityDistribution": {
+      "chartData": [
+        { "label": "Low", "value": 45, "color": "#3b82f6" },
+        { "label": "Medium", "value": 32, "color": "#eab308" },
+        { "label": "High", "value": 18, "color": "#f97316" },
+        { "label": "Critical", "value": 8, "color": "#dc2626" }
+      ]
+    },
+
+    "criticalTickets": [
+      {
+        "ticketId": "TKT-10234",
+        "subject": "VM instance not starting",
+        "customer": "TechCorp",
+        "priority": "Critical",
+        "priorityClass": "danger",
+        "age": "2h 15m"
+      },
+      {
+        "ticketId": "TKT-10235",
+        "subject": "Database timeout errors",
+        "customer": "CloudFast",
+        "priority": "Critical",
+        "priorityClass": "danger",
+        "age": "1h 45m"
+      },
+      {
+        "ticketId": "TKT-10237",
+        "subject": "K8s cluster scale-up issue",
+        "customer": "TechFlow",
+        "priority": "High",
+        "priorityClass": "warning",
+        "age": "4h"
+      }
+    ],
+
+    "tickets": [
+      {
+        "ticketId": "TKT-10234",
+        "subject": "VM instance not starting after reboot",
+        "customer": "TechCorp Solutions",
+        "priority": "High",
+        "priorityClass": "warning",
+        "status": "In Progress",
+        "statusClass": "info",
+        "slaState": "Within SLA",
+        "slaStateClass": "success",
+        "agent": "Rajesh Kumar",
+        "queue": "Technical",
+        "created": "2024-03-15 10:30",
+        "age": "2h 15m"
+      },
+      {
+        "ticketId": "TKT-10235",
+        "subject": "Database connection timeout errors",
+        "customer": "CloudFast Inc",
+        "priority": "Critical",
+        "priorityClass": "danger",
+        "status": "New",
+        "statusClass": "gray",
+        "slaState": "At Risk",
+        "slaStateClass": "warning",
+        "agent": "Priya Sharma",
+        "queue": "Technical",
+        "created": "2024-03-15 11:00",
+        "age": "1h 45m"
+      },
+      {
+        "ticketId": "TKT-10236",
+        "subject": "Billing inquiry - invoice discrepancy",
+        "customer": "DataSys Ltd",
+        "priority": "Low",
+        "priorityClass": "info",
+        "status": "Resolved",
+        "statusClass": "success",
+        "slaState": "Within SLA",
+        "slaStateClass": "success",
+        "agent": "Amit Patel",
+        "queue": "Billing",
+        "created": "2024-03-15 09:15",
+        "age": "3h 30m"
+      },
+      {
+        "ticketId": "TKT-10237",
+        "subject": "Kubernetes cluster scale-up not working",
+        "customer": "TechFlow Systems",
+        "priority": "High",
+        "priorityClass": "warning",
+        "status": "In Progress",
+        "statusClass": "info",
+        "slaState": "Within SLA",
+        "slaStateClass": "success",
+        "agent": "Sneha Verma",
+        "queue": "Technical",
+        "created": "2024-03-15 08:45",
+        "age": "4h"
+      },
+      {
+        "ticketId": "TKT-10238",
+        "subject": "Storage volume full - need expansion",
+        "customer": "CloudBase Ltd",
+        "priority": "Medium",
+        "priorityClass": "warning",
+        "status": "Pending Customer",
+        "statusClass": "gray",
+        "slaState": "Within SLA",
+        "slaStateClass": "success",
+        "agent": "Rajesh Kumar",
+        "queue": "Technical",
+        "created": "2024-03-14 16:20",
+        "age": "20h 25m"
+      }
+    ]
+  }
+}
+
+--------------------------------------------------------------------------------
+SAMPLE RESPONSE
+--------------------------------------------------------------------------------
+
+{
+  "success": true,
+  "data": {
+    "kpis": {
+      "totalTickets": { "value": 152, "subtitle": "All time" },
+      "openTickets": { "value": 76, "subtitle": "Currently active" },
+      "avgFirstResponseTime": { "value": "55m", "subtitle": "Target: < 1h" },
+      "avgTotalResolutionTime": { "value": "4.2h", "subtitle": "Resolution time" },
+      "slaBreaches": { "value": 127, "subtitle": "Needs attention" },
+      "reopens": { "value": 5, "subtitle": "Resolution quality" }
+    },
+    "smallKPIs": {
+      "avgTicketsPerHour": "18/hr",
+      "frtCompliance": "92%",
+      "csatScore": 4.6,
+      "reopenRate": "3.2%",
+      "unassigned": 5,
+      "firstContactResolution": "89%"
+    },
+    "statusDistribution": {
+      "chartData": [
+        { "label": "New", "value": 12, "color": "#3b82f6" },
+        { "label": "In Progress", "value": 34, "color": "#6366f1" },
+        { "label": "Waiting Customer", "value": 18, "color": "#8b5cf6" },
+        { "label": "Resolved", "value": 76, "color": "#15803d" },
+        { "label": "Closed", "value": 8, "color": "#6b7280" },
+        { "label": "Reopened", "value": 4, "color": "#dc2626" }
+      ]
+    },
+    "slaPerformance": [
+      { "priority": "Critical", "withinSLA": 8, "atRisk": 2, "breached": 1, "total": 11 },
+      { "priority": "High", "withinSLA": 24, "atRisk": 5, "breached": 3, "total": 32 },
+      { "priority": "Medium", "withinSLA": 38, "atRisk": 7, "breached": 4, "total": 49 },
+      { "priority": "Low", "withinSLA": 52, "atRisk": 3, "breached": 1, "total": 56 }
+    ],
+    "agentScorecards": [...],
+    "agentComparison": [...],
+    "teamPerformance": [...],
+    "reopenAnalysis": {...},
+    "mostReopenedTickets": [...],
+    "resolvedTickets": [...],
+    "slaTrends": {...},
+    "complianceTrend": {...},
+    "waitingTimeTrend": {...},
+    "shiftHandover": [...],
+    "priorityDistribution": {...},
+    "criticalTickets": [...],
+    "tickets": [...]
+  }
+}
+
+--------------------------------------------------------------------------------
+VALID VALUES
+--------------------------------------------------------------------------------
+
+PRIORITY VALUES:
+- Critical
+- High
+- Medium
+- Low
+
+TICKET STATUS VALUES:
+- New
+- In Progress
+- Waiting Customer
+- Pending Customer
+- Resolved
+- Closed
+- Reopened
+
+SLA STATE VALUES:
+- Within SLA
+- At Risk
+- Breached
+
+BADGE CLASS VALUES:
+- success (green)
+- warning (yellow/orange)
+- danger (red)
+- info (blue)
+- gray (neutral)
+
+AGENT ROLE VALUES:
+- L1
+- L2
+- L3
+
+AGENT STATUS VALUES:
+- Active
+- On Leave
+- Break
+- Offline
+
+SCORE STATUS VALUES:
+- excellent (80-100, green)
+- good (70-79, blue)
+- needs_attention (60-69, yellow)
+- critical (<60, red)
+
+QUEUE VALUES:
+- Technical
+- Billing
+- General
+- Sales
+
+REOPEN REASON VALUES:
+- Incomplete Fix
+- Root Cause
+- Bad Comm
+- Customer
+- Alert
+
+--------------------------------------------------------------------------------
+ERROR RESPONSE
+--------------------------------------------------------------------------------
+
+{
+  "success": false,
+  "error": {
+    "code": "INVALID_PARAMETER",
+    "message": "Invalid view parameter. Must be 'manager' or 'agent'"
+  }
+}
+
+--------------------------------------------------------------------------------
+HTTP STATUS CODES
+--------------------------------------------------------------------------------
+
+| Code | Description                                    |
+|------|------------------------------------------------|
+| 200  | Success - Data returned                        |
+| 400  | Bad Request - Invalid parameters               |
+| 401  | Unauthorized - Authentication required         |
+| 403  | Forbidden - Insufficient permissions           |
+| 500  | Internal Server Error                          |
+
+--------------------------------------------------------------------------------
+USAGE EXAMPLES
+--------------------------------------------------------------------------------
+
+// Fetch manager view data (default)
+fetch('support-api.php')
+  .then(res => res.json())
+  .then(data => console.log(data));
+
+// Fetch agent view for specific agent
+fetch('support-api.php?view=agent&agent_id=agent-1')
+  .then(res => res.json())
+  .then(data => console.log(data));
+
+// Fetch with filters
+fetch('support-api.php?priority=Critical&status=In Progress&period=7d')
+  .then(res => res.json())
+  .then(data => console.log(data));
+
+================================================================================

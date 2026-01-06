@@ -1,0 +1,582 @@
+================================================================================
+                        LEADS DASHBOARD API DOCUMENTATION
+================================================================================
+
+ENDPOINT
+--------
+URL:        leads-api.php
+Method:     GET
+Parameters: 
+  - period (optional): "today", "week", "month", "quarter"
+  - team (optional): "inbound", "outbound", "all"
+  - source (optional): Filter by lead source
+  - owner (optional): "my_leads", "team_leads", "all"
+
+================================================================================
+REQUEST
+================================================================================
+
+GET /leads-api.php?period=month&team=all HTTP/1.1
+Host: your-domain.com
+Content-Type: application/json
+
+JavaScript Example:
+-------------------
+fetch('leads-api.php?period=month&team=all')
+  .then(response => response.json())
+  .then(data => console.log(data));
+
+================================================================================
+RESPONSE PAYLOAD
+================================================================================
+
+{
+  "globalKPIs": {
+    "totalLeads": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "totalCalled": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "connected": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "meetingsScheduled": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "meetingsAttended": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "qualifiedLeads": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "disqualified": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "followUpRequired": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "urgent48h": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "callsLast7Days": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "contactRate": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "totalInFollowUp": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "signUps": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    }
+  },
+
+  "inboundKPIs": {
+    "websiteLeads": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "hotLeads": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "waitingInQueue": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "connectedInCall": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "scheduledDemos": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "lostInQueue": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "noAnswer": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "followUps": {
+      "value": "string",
+      "trend": number,
+      "trendDirection": "up" | "down"
+    }
+  },
+
+  "outboundKPIs": {
+    "totalDataAssigned": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "totalColdCalls": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "emailsSent": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "whatsAppSent": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "firstContactMade": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "conversationStarted": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "qualifiedProspects": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "notInterested": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "warmFollowUps": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "meetingScheduled": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "meetingJoined": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "meetingNotJoined": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    },
+    "reEngage": {
+      "value": number,
+      "trend": number,
+      "trendDirection": "up" | "down"
+    }
+  },
+
+  "charts": {
+    "inboundFunnel": {
+      "labels": ["string"],
+      "data": [number]
+    },
+    "inboundSourceDistribution": {
+      "labels": ["string"],
+      "data": [number]
+    },
+    "outboundActivity": {
+      "labels": ["string"],
+      "datasets": {
+        "calls": [number],
+        "emails": [number],
+        "whatsApp": [number]
+      }
+    },
+    "conversionTrends": {
+      "labels": ["string"],
+      "datasets": {
+        "inbound": [number],
+        "outbound": [number]
+      }
+    },
+    "useCaseDistribution": {
+      "labels": ["string"],
+      "data": [number]
+    },
+    "leadQualityScores": {
+      "labels": ["string"],
+      "data": [number]
+    },
+    "cloudSpendPotential": {
+      "labels": ["string"],
+      "data": [number]
+    }
+  },
+
+  "statusDistribution": [
+    {
+      "status": "string",
+      "count": number,
+      "percentage": number
+    }
+  ],
+
+  "teamPerformance": [
+    {
+      "name": "string",
+      "team": "string",
+      "assigned": number,
+      "calls": number,
+      "connected": number,
+      "meetings": number,
+      "qualified": number,
+      "conversion": number
+    }
+  ],
+
+  "followUpTasks": [
+    {
+      "lead": "string",
+      "type": "string",
+      "dueDate": "string",
+      "lastAction": "string",
+      "owner": "string",
+      "status": "string",
+      "priority": "string"
+    }
+  ],
+
+  "leadDatabase": [
+    {
+      "name": "string",
+      "email": "string",
+      "phone": "string",
+      "company": "string",
+      "source": "string",
+      "status": "string",
+      "owner": "string",
+      "quality": "string",
+      "useCase": "string",
+      "lastActivity": "string"
+    }
+  ]
+}
+
+================================================================================
+SAMPLE RESPONSE
+================================================================================
+
+{
+  "globalKPIs": {
+    "totalLeads": { "value": 2627, "trend": 12, "trendDirection": "up" },
+    "totalCalled": { "value": 1652, "trend": 8, "trendDirection": "up" },
+    "connected": { "value": 1245, "trend": 15, "trendDirection": "up" },
+    "meetingsScheduled": { "value": 342, "trend": 5, "trendDirection": "up" },
+    "meetingsAttended": { "value": 267, "trend": 3, "trendDirection": "down" },
+    "qualifiedLeads": { "value": 267, "trend": 3, "trendDirection": "down" },
+    "disqualified": { "value": 267, "trend": 3, "trendDirection": "down" },
+    "followUpRequired": { "value": 267, "trend": 3, "trendDirection": "down" },
+    "urgent48h": { "value": 267, "trend": 3, "trendDirection": "down" },
+    "callsLast7Days": { "value": 198, "trend": 10, "trendDirection": "up" },
+    "contactRate": { "value": 512, "trend": 6, "trendDirection": "up" },
+    "totalInFollowUp": { "value": 406, "trend": 7, "trendDirection": "up" },
+    "signUps": { "value": 89, "trend": 9, "trendDirection": "up" }
+  },
+
+  "inboundKPIs": {
+    "websiteLeads": { "value": 845, "trend": 14, "trendDirection": "up" },
+    "hotLeads": { "value": 773, "trend": 11, "trendDirection": "up" },
+    "waitingInQueue": { "value": 612, "trend": 5, "trendDirection": "down" },
+    "connectedInCall": { "value": 688, "trend": 13, "trendDirection": "up" },
+    "scheduledDemos": { "value": 254, "trend": 16, "trendDirection": "up" },
+    "lostInQueue": { "value": 98, "trend": 8, "trendDirection": "down" },
+    "noAnswer": { "value": 67, "trend": 4, "trendDirection": "down" },
+    "followUps": { "value": "4.3k", "trend": 7, "trendDirection": "up" }
+  },
+
+  "outboundKPIs": {
+    "totalDataAssigned": { "value": 3450, "trend": 9, "trendDirection": "up" },
+    "totalColdCalls": { "value": 2180, "trend": 12, "trendDirection": "up" },
+    "emailsSent": { "value": 2856, "trend": 18, "trendDirection": "up" },
+    "whatsAppSent": { "value": 1040, "trend": 10, "trendDirection": "up" },
+    "firstContactMade": { "value": 1234, "trend": 6, "trendDirection": "up" },
+    "conversationStarted": { "value": 892, "trend": 14, "trendDirection": "up" },
+    "qualifiedProspects": { "value": 892, "trend": 14, "trendDirection": "up" },
+    "notInterested": { "value": 892, "trend": 14, "trendDirection": "up" },
+    "warmFollowUps": { "value": 892, "trend": 14, "trendDirection": "up" },
+    "meetingScheduled": { "value": 892, "trend": 14, "trendDirection": "up" },
+    "meetingJoined": { "value": 892, "trend": 14, "trendDirection": "up" },
+    "meetingNotJoined": { "value": 892, "trend": 14, "trendDirection": "up" },
+    "reEngage": { "value": 892, "trend": 14, "trendDirection": "up" }
+  },
+
+  "charts": {
+    "inboundFunnel": {
+      "labels": ["Connected (Transfer To Sales)", "Verified Account", "Invalid No."],
+      "data": [845, 773, 688]
+    },
+    "inboundSourceDistribution": {
+      "labels": ["Google Search", "Live Chat", "Import By Manoj", "Google Adwords", "Partners", "Incoming Call", "OutGoing Call", "Marketing Emails", "Events", "Social Media", "Email", "My Database", "Existing Database", "Cloud Account", "Enterprise Clients -CT", "Tally Accounts", "Landing Pages", "ART Database", "Forms", "Partner Account"],
+      "data": [773, 612, 688, 98, 430, 23, 44, 55, 66, 77, 88, 99, 11, 2, 333, 444, 555, 666, 777, 888]
+    },
+    "outboundActivity": {
+      "labels": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      "datasets": {
+        "calls": [120, 150, 180, 140, 160, 90, 70],
+        "emails": [200, 180, 220, 190, 210, 120, 100],
+        "whatsApp": [80, 90, 100, 85, 95, 60, 50]
+      }
+    },
+    "conversionTrends": {
+      "labels": ["Week 1", "Week 2", "Week 3", "Week 4"],
+      "datasets": {
+        "inbound": [12, 15, 18, 22],
+        "outbound": [5, 7, 9, 11]
+      }
+    },
+    "useCaseDistribution": {
+      "labels": ["AWS", "Azure", "GCP", "Linode", "DigitalOcean", "Hybrid", "On-prem", "Others"],
+      "data": [420, 380, 290, 250, 180, 200, 300, 350]
+    },
+    "leadQualityScores": {
+      "labels": ["Excellent", "Good", "Fair"],
+      "data": [50, 10, 90]
+    },
+    "cloudSpendPotential": {
+      "labels": ["AWS", "Azure", "GCP", "Linode", "DigitalOcean", "Hybrid", "On-prem", "Others"],
+      "data": [420, 380, 290, 250, 180, 200, 8000, 350]
+    }
+  },
+
+  "statusDistribution": [
+    { "status": "Not Called", "count": 145, "percentage": 18.2 },
+    { "status": "Invalid Number", "count": 23, "percentage": 2.9 },
+    { "status": "Called – No Answer", "count": 89, "percentage": 11.2 },
+    { "status": "Called – Not Interested", "count": 67, "percentage": 8.4 },
+    { "status": "Meeting Scheduled", "count": 156, "percentage": 19.6 },
+    { "status": "Follow-up Required", "count": 134, "percentage": 16.8 },
+    { "status": "Do Not Call", "count": 12, "percentage": 1.5 },
+    { "status": "Callback Requested", "count": 45, "percentage": 5.7 },
+    { "status": "No Longer at Company", "count": 18, "percentage": 2.3 },
+    { "status": "Sent Information – Awaiting", "count": 78, "percentage": 9.8 },
+    { "status": "In Lock-In", "count": 15, "percentage": 1.9 },
+    { "status": "Wrong Details", "count": 8, "percentage": 1.0 },
+    { "status": "Disconnect", "count": 6, "percentage": 0.8 }
+  ],
+
+  "teamPerformance": [
+    {
+      "name": "Rahul Verma",
+      "team": "Inbound",
+      "assigned": 156,
+      "calls": 142,
+      "connected": 98,
+      "meetings": 34,
+      "qualified": 28,
+      "conversion": 17.9
+    },
+    {
+      "name": "Priya Sharma",
+      "team": "Outbound",
+      "assigned": 234,
+      "calls": 198,
+      "connected": 87,
+      "meetings": 22,
+      "qualified": 18,
+      "conversion": 7.7
+    },
+    {
+      "name": "Amit Patel",
+      "team": "Inbound",
+      "assigned": 178,
+      "calls": 165,
+      "connected": 112,
+      "meetings": 41,
+      "qualified": 35,
+      "conversion": 19.7
+    }
+  ],
+
+  "followUpTasks": [
+    {
+      "lead": "Vikram Singh",
+      "type": "Callback",
+      "dueDate": "2024-01-15 10:30 AM",
+      "lastAction": "Called - No Answer",
+      "owner": "Priya Sharma",
+      "status": "Due",
+      "priority": "High"
+    },
+    {
+      "lead": "Neha Kapoor",
+      "type": "Demo",
+      "dueDate": "2024-01-16 02:00 PM",
+      "lastAction": "Email sent",
+      "owner": "Rahul Verma",
+      "status": "Scheduled",
+      "priority": "Medium"
+    },
+    {
+      "lead": "Karan Mehta",
+      "type": "Follow-up",
+      "dueDate": "2024-01-17 11:00 AM",
+      "lastAction": "Meeting completed",
+      "owner": "Amit Patel",
+      "status": "Pending",
+      "priority": "Low"
+    }
+  ],
+
+  "leadDatabase": [
+    {
+      "name": "Ankit Mehta",
+      "email": "ankit@cloudfirst.com",
+      "phone": "+91 98123 45678",
+      "company": "CloudFirst Solutions",
+      "source": "Website",
+      "status": "Meeting Scheduled",
+      "owner": "Rahul Verma",
+      "quality": "High",
+      "useCase": "Kubernetes",
+      "lastActivity": "2024-01-14 02:30 PM"
+    },
+    {
+      "name": "Sneha Reddy",
+      "email": "sneha@techwave.in",
+      "phone": "+91 87654 32109",
+      "company": "TechWave India",
+      "source": "Apollo",
+      "status": "Follow-up Required",
+      "owner": "Priya Sharma",
+      "quality": "Medium",
+      "useCase": "VMs",
+      "lastActivity": "2024-01-13 11:45 AM"
+    },
+    {
+      "name": "Rohan Gupta",
+      "email": "rohan@startupxyz.com",
+      "phone": "+91 76543 21098",
+      "company": "StartupXYZ",
+      "source": "Email Campaign",
+      "status": "Called – No Answer",
+      "owner": "Amit Patel",
+      "quality": "Low",
+      "useCase": "Storage",
+      "lastActivity": "2024-01-12 04:15 PM"
+    }
+  ]
+}
+
+================================================================================
+LEAD STATUS VALUES
+================================================================================
+
+Valid status values for statusDistribution and leadDatabase:
+- "Not Called"
+- "Invalid Number"
+- "Called – No Answer"
+- "Called – Not Interested"
+- "Meeting Scheduled"
+- "Follow-up Required"
+- "Do Not Call"
+- "Callback Requested"
+- "No Longer at Company"
+- "Sent Information – Awaiting"
+- "In Lock-In"
+- "Wrong Details"
+- "Disconnect"
+
+================================================================================
+LEAD SOURCE VALUES
+================================================================================
+
+Valid source values:
+- "Google Search"
+- "Live Chat"
+- "Import By Manoj"
+- "Google Adwords"
+- "Partners"
+- "Incoming Call"
+- "OutGoing Call"
+- "Marketing Emails"
+- "Events"
+- "Social Media"
+- "Email"
+- "My Database"
+- "Existing Database"
+- "Cloud Account"
+- "Enterprise Clients -CT"
+- "Tally Accounts"
+- "Landing Pages"
+- "ART Database"
+- "Forms"
+- "Partner Account"
+- "Website"
+- "Apollo"
+- "Email Campaign"
+- "WhatsApp"
+
+================================================================================
+CLOUD PROVIDER VALUES
+================================================================================
+
+Valid cloud provider labels for useCaseDistribution and cloudSpendPotential:
+- "AWS"
+- "Azure"
+- "GCP"
+- "Linode"
+- "DigitalOcean"
+- "Hybrid"
+- "On-prem"
+- "Others"
+
+================================================================================
+ERROR RESPONSE
+================================================================================
+
+{
+  "error": true,
+  "message": "Error description"
+}
+
+HTTP Status Codes:
+- 200: Success
+- 400: Bad Request
+- 500: Internal Server Error
+
+================================================================================

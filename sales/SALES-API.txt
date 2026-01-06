@@ -1,0 +1,940 @@
+================================================================================
+                        SALES DASHBOARD API DOCUMENTATION
+================================================================================
+
+ENDPOINT
+--------
+URL:        sales-api.php
+Method:     GET
+Parameters:
+  - period (optional): "today", "week", "month", "quarter", "year", "custom"
+  - status (optional): Filter by status
+
+================================================================================
+REQUEST
+================================================================================
+
+GET /sales-api.php?period=today HTTP/1.1
+Host: your-domain.com
+Content-Type: application/json
+
+JavaScript Example:
+-------------------
+fetch('sales-api.php?period=today')
+  .then(response => response.json())
+  .then(data => console.log(data));
+
+================================================================================
+RESPONSE PAYLOAD
+================================================================================
+
+{
+  "followUpTasks": [
+    {
+      "id": "string",
+      "type": "string",
+      "status": "string",
+      "followup_time": "string",
+      "reference": "string",
+      "last_message": "string",
+      "assigned_to": "string",
+      "department": "string",
+      "refrence": "string",
+      "entrytime": "string",
+      "completed": "string",
+      "contact": {
+        "firstname": "string",
+        "lastname": "string",
+        "email": "string",
+        "mobile": "string",
+        "job_title": "string",
+        "city": "string",
+        "state": "string",
+        "country": "string",
+        "owner": "string",
+        "status": "string",
+        "source": "string",
+        "medium": "string"
+      },
+      "activities": [
+        {
+          "user": "string",
+          "datetime": "string",
+          "due": "string",
+          "note": "string",
+          "completed": boolean
+        }
+      ]
+    }
+  ],
+
+  "kpis": {
+    "total_business": "string",
+    "active_mrr": "string",
+    "new_business": "string",
+    "funnel_size": "string",
+    "total_leads": "string",
+    "converted_leads": "string",
+    "newMeetings": "string",
+    "newLeads": "string",
+    "leadQualified": "string",
+    "followUp": "string",
+    "proposalsSent": "string"
+  },
+
+  "total_funnel_value": {
+    "deals_lost": "string",
+    "deals_won": "string",
+    "aspects_added": "string",
+    "funnel_value": "string"
+  },
+
+  "dealsWonData": [
+    {
+      "id": number,
+      "name": "string",
+      "company": "string",
+      "value": "string",
+      "contractType": "string (3Years|Annual|Hourly|MRR|Quarterly)",
+      "closedDate": "string (YYYY-MM-DD)",
+      "rep": "string"
+    }
+  ],
+
+  "dealsLostData": [
+    {
+      "id": number,
+      "name": "string",
+      "company": "string",
+      "value": "string",
+      "lossReason": "string (see LOSS REASON VALUES)",
+      "lostDate": "string (YYYY-MM-DD)",
+      "rep": "string"
+    }
+  ],
+
+  "headerList": {
+    "overdue_followups": number,
+    "today_due_followups": number,
+    "this_week_due_followups": number,
+    "next_30_days_due": number
+  },
+
+  "charts": {
+    "quarterTarget": {
+      "achievementPercent": "string",
+      "targetAchieved": "string",
+      "remainingTarget": "string",
+      "chartData": {
+        "labels": ["string"],
+        "data": [number],
+        "colors": ["string"]
+      }
+    },
+    "leadSource": {
+      "labels": ["string"],
+      "data": [number],
+      "colors": ["string"]
+    },
+    "leadStages": {
+      "labels": ["string"],
+      "data": [number]
+    },
+    "salesTarget": {
+      "labels": ["string"],
+      "datasets": {
+        "target": [number],
+        "achieved": [number]
+      }
+    }
+  },
+
+  "recentActivity": [
+    {
+      "user": "string",
+      "description": "string",
+      "details": "string",
+      "time": "string",
+      "type": "string"
+    }
+  ],
+
+  "salesTargets": [
+    {
+      "id": "string",
+      "rep": "string",
+      "quarter": "string",
+      "wholeTotalTarget": "string (formatted with ₹) - Combined MRR + WHOLE target",
+      "wholeMonth1": "string (formatted with ₹) - WHOLE Month 1 (30% of WHOLE)",
+      "wholeMonth2": "string (formatted with ₹) - WHOLE Month 2 (40% of WHOLE)",
+      "wholeMonth3": "string (formatted with ₹) - WHOLE Month 3 (30% of WHOLE)",
+      "mrrMonth1": "string (formatted with ₹) - MRR Month 1 (30% of MRR)",
+      "mrrMonth2": "string (formatted with ₹) - MRR Month 2 (40% of MRR)",
+      "mrrMonth3": "string (formatted with ₹) - MRR Month 3 (30% of MRR)",
+      "achievedRevenue": "string (formatted with ₹) - Total achieved revenue",
+      "targetMRR": "string (formatted with ₹) - Total MRR target (33% of wholeTotalTarget)",
+      "achievedMRR": "string (formatted with ₹) - Achieved MRR",
+      "achievement": "string (percentage)",
+      "status": "string (auto-calculated: On Track/Behind/At Risk)"
+    }
+  ]
+}
+
+================================================================================
+SAMPLE RESPONSE
+================================================================================
+
+{
+  "followUpTasks": [
+    {
+      "name": "Rohan Sharma",
+      "company": "Cloud Ventures",
+      "task": "Cloud Migration",
+      "type": "Call",
+      "time": "2:45 PM",
+      "status": "Done"
+    },
+    {
+      "name": "Priya Patel",
+      "company": "Tech Innovations",
+      "task": "VDI Requirements Call",
+      "type": "Meeting",
+      "time": "3:45 PM",
+      "status": "Done"
+    },
+    {
+      "name": "Amit Kumar",
+      "company": "DataFirst Solutions",
+      "task": "Follow up on proposal",
+      "type": "Email",
+      "time": "4:30 PM",
+      "status": "Contacted"
+    }
+  ],
+
+  "kpis": {
+    "total_business": "₹68.02L",
+    "active_mrr": "₹45.3K",
+    "new_business": "₹32.5L",
+    "funnel_size": "₹125.8L",
+    "total_leads": "1,247",
+    "converted_leads": "342",
+    "newMeetings": "89",
+    "newLeads": "523",
+    "leadQualified": "156",
+    "followUp": "78",
+    "proposalsSent": "23",
+    "dealsLost": "45",
+    "dealsWon": "67"
+  },
+
+  "charts": {
+    "quarterTarget": {
+      "achievementPercent": "86.1%",
+      "targetAchieved": "₹11.5Lk",
+      "remainingTarget": "₹1.85Lk",
+      "chartData": {
+        "labels": ["Achieved", "Remaining"],
+        "data": [86.1, 13.9],
+        "colors": ["#10B981", "#E5E7EB"]
+      }
+    },
+    "leadSource": {
+      "labels": ["Website", "Referral", "LinkedIn", "Cold Call", "Partner"],
+      "data": [420, 240, 145, 130, 90],
+      "colors": ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6"]
+    },
+    "leadStages": {
+      "labels": ["New", "Contacted", "Qualified", "Proposal", "Negotiation", "Closed", "Lost"],
+      "data": [89, 342, 234, 156, 78, 523, 45]
+    },
+    "salesTarget": {
+      "labels": ["Q1", "Q2", "Q3"],
+      "datasets": {
+        "target": [80, 90, 85],
+        "achieved": [75, 92, 88]
+      }
+    }
+  },
+
+  "pipeline": {
+    "stages": [
+      {
+        "name": "New",
+        "count": 7,
+        "value": "₹2.8L",
+        "deals": [
+          {
+            "name": "Cloud Migration",
+            "company": "CloudTechies",
+            "value": "₹1.8Lk",
+            "stage": "New"
+          },
+          {
+            "name": "Infrastructure Setup",
+            "company": "StartupXYZ",
+            "value": "₹1.0Lk",
+            "stage": "New"
+          }
+        ]
+      },
+      {
+        "name": "Contacted",
+        "count": 12,
+        "value": "₹5.4L",
+        "deals": [
+          {
+            "name": "Database Hosting",
+            "company": "DataWave Ltd",
+            "value": "₹2.5Lk",
+            "stage": "Contacted"
+          }
+        ]
+      },
+      {
+        "name": "Qualified",
+        "count": 8,
+        "value": "₹8.2L",
+        "deals": [
+          {
+            "name": "Kubernetes Cluster",
+            "company": "TechStart Inc",
+            "value": "₹4.2Lk",
+            "stage": "Qualified"
+          }
+        ]
+      },
+      {
+        "name": "Proposal",
+        "count": 5,
+        "value": "₹12.6L",
+        "deals": [
+          {
+            "name": "Enterprise Cloud",
+            "company": "BigCorp Systems",
+            "value": "₹8.5Lk",
+            "stage": "Proposal"
+          }
+        ]
+      },
+      {
+        "name": "Negotiation",
+        "count": 9,
+        "value": "₹18.2L",
+        "deals": [
+          {
+            "name": "Cloud Infrastructure",
+            "company": "Enterprise Corp",
+            "value": "₹10Lk",
+            "stage": "Negotiation"
+          }
+        ]
+      },
+      {
+        "name": "Closed Won",
+        "count": 15,
+        "value": "₹25.8L",
+        "deals": [
+          {
+            "name": "Full Stack Hosting",
+            "company": "FinTech Solutions",
+            "value": "₹6.8Lk",
+            "stage": "Closed Won"
+          }
+        ]
+      }
+    ]
+  },
+
+  "recentActivity": [
+    {
+      "user": "Latif",
+      "description": "added EMC Corp",
+      "details": "deal worth ₹2.5L to the pipeline from lead source",
+      "time": "3 hours ago",
+      "type": "deal"
+    },
+    {
+      "user": "Priya",
+      "description": "completed meeting",
+      "details": "with Tech Innovations regarding VDI requirements",
+      "time": "5 hours ago",
+      "type": "meeting"
+    },
+    {
+      "user": "Rohan",
+      "description": "sent proposal",
+      "details": "to Cloud Ventures for cloud migration project",
+      "time": "Yesterday",
+      "type": "email"
+    },
+    {
+      "user": "Amit",
+      "description": "closed deal",
+      "details": "with DataFirst Solutions worth ₹4.2L",
+      "time": "Yesterday",
+      "type": "deal"
+    },
+    {
+      "user": "Neha",
+      "description": "made discovery call",
+      "details": "with StartupXYZ to understand their infrastructure needs",
+      "time": "2 days ago",
+      "type": "call"
+    }
+  ],
+
+  "salesTargets": [
+    {
+      "id": "target-001",
+      "rep": "TRM",
+      "quarter": "Q4",
+      "wholeTotalTarget": "₹7.16Lk",
+      "wholeMonth1": "₹2.30Lk",
+      "wholeMonth2": "₹2.40Lk",
+      "wholeMonth3": "₹2.46Lk",
+      "mrrMonth1": "₹1.40K",
+      "mrrMonth2": "₹1.50K",
+      "mrrMonth3": "₹1.53K",
+      "achievedRevenue": "₹6.23Lk",
+      "targetMRR": "₹4.40K",
+      "achievedMRR": "₹3.53K",
+      "achievement": "88%",
+      "status": "On Track"
+    },
+    {
+      "id": "target-002",
+      "rep": "ZRM",
+      "quarter": "Q4",
+      "wholeTotalTarget": "₹8.66Lk",
+      "wholeMonth1": "₹2.80Lk",
+      "wholeMonth2": "₹2.90Lk",
+      "wholeMonth3": "₹2.96Lk",
+      "mrrMonth1": "₹2.40K",
+      "mrrMonth2": "₹2.60K",
+      "mrrMonth3": "₹2.80K",
+      "achievedRevenue": "₹8.02Lk",
+      "targetMRR": "₹7.80K",
+      "achievedMRR": "₹9.3K",
+      "achievement": "106%",
+      "status": "On Track"
+    },
+    {
+      "id": "target-003",
+      "rep": "ZRM",
+      "quarter": "Q4",
+      "wholeTotalTarget": "₹9.66Lk",
+      "wholeMonth1": "₹3.10Lk",
+      "wholeMonth2": "₹3.20Lk",
+      "wholeMonth3": "₹3.36Lk",
+      "mrrMonth1": "₹3.20K",
+      "mrrMonth2": "₹3.10K",
+      "mrrMonth3": "₹3.30K",
+      "achievedRevenue": "₹7.60Lk",
+      "targetMRR": "₹9.60K",
+      "achievedMRR": "₹4.83K",
+      "achievement": "67%",
+      "status": "At Risk"
+    }
+  ]
+}
+
+================================================================================
+TASK TYPE VALUES
+================================================================================
+
+For followUpTasks type:
+- "Call" - Phone call tasks
+- "Meeting" - Scheduled meetings
+- "Email" - Email follow-ups
+
+================================================================================
+TASK STATUS VALUES
+================================================================================
+
+For followUpTasks status:
+- "Done" - Task completed
+- "Contacted" - Contact made
+- "Pending" - Task pending
+
+================================================================================
+ACTIVITY TYPE VALUES
+================================================================================
+
+For recentActivity type:
+- "deal" - Deal related activity
+- "meeting" - Meeting activity
+- "email" - Email activity
+- "call" - Call activity
+
+================================================================================
+PIPELINE STAGE VALUES
+================================================================================
+
+For pipeline stages:
+- "New"
+- "Contacted"
+- "Qualified"
+- "Proposal"
+- "Negotiation"
+- "Closed Won"
+- "Closed Lost"
+
+================================================================================
+LEAD SOURCE VALUES
+================================================================================
+
+For leadSource chart:
+- "Website"
+- "Referral"
+- "LinkedIn"
+- "Cold Call"
+- "Partner"
+
+================================================================================
+LEAD STAGE VALUES
+================================================================================
+
+For leadStages chart:
+- "New"
+- "Contacted"
+- "Qualified"
+- "Proposal"
+- "Negotiation"
+- "Closed"
+- "Lost"
+
+================================================================================
+CONTRACT TYPE VALUES (DEALS WON)
+================================================================================
+
+For dealsWonData contractType:
+- "3Years" - 3-year contract
+- "Annual" - Annual contract
+- "Hourly" - Hourly billing
+- "MRR" - Monthly recurring revenue
+- "Quarterly" - Quarterly contract
+
+================================================================================
+LOSS REASON VALUES (DEALS LOST)
+================================================================================
+
+For dealsLostData lossReason:
+- "High Quote"
+- "Budget Constraints"
+- "Support Quality"
+- "Scalability Concerns"
+- "Limited Trial Period"
+- "Lack of Awareness"
+- "Migration Concerns"
+- "Integration Challenges"
+- "Change Resistance"
+- "Internal Approval Delays"
+- "Non-Serviceable"
+- "Product Unavailability"
+- "Feature Unavailability"
+- "Lack of Paperwork"
+- "Unresponsive"
+
+================================================================================
+TARGET STATUS VALUES
+================================================================================
+
+For salesTargets status:
+- "On Track" - Target likely to be met
+- "At Risk" - Target at risk of not being met
+
+================================================================================
+POST - CREATE/UPDATE SALES TARGET
+================================================================================
+
+ENDPOINT
+--------
+URL:        sales-api.php?action=targets
+Method:     POST
+Content-Type: application/json
+
+--------------------------------------------------------------------------------
+REQUEST PAYLOAD (NEW STRUCTURE - 3 INPUT FIELDS)
+--------------------------------------------------------------------------------
+
+The edit form only requires 3 input fields. All other fields are auto-calculated.
+
+INPUT FIELDS:
+{
+  "id": "string (optional - omit for new target, include for update)",
+  "rep": "string (required) - Sales representative code/name",
+  "quarter": "string (required) - Q1, Q2, Q3, or Q4",
+  "wholeTotalTarget": number (required) - Combined target for MRR + WHOLE in INR
+}
+
+AUTO-CALCULATED FIELDS:
+The following fields are calculated from wholeTotalTarget:
+
+1. TARGET MRR = 33% of wholeTotalTarget
+   - Month 1 = 30% of TARGET MRR
+   - Month 2 = 40% of TARGET MRR
+   - Month 3 = 30% of TARGET MRR
+
+2. TARGET WHOLE = 67% of wholeTotalTarget
+   - Month 1 = 30% of TARGET WHOLE
+   - Month 2 = 40% of TARGET WHOLE
+   - Month 3 = 30% of TARGET WHOLE
+
+3. STATUS (auto-calculated based on achievement %):
+   - "On Track" - Achievement between 50% and 70%
+   - "Behind"   - Achievement less than 40%
+   - "At Risk"  - Achievement 40-49% or above 70%
+
+FULL PAYLOAD STRUCTURE (sent to API):
+{
+  "id": "string (optional)",
+  "rep": "string",
+  "quarter": "string",
+  "wholeTotalTarget": number,
+  "targetMRR": number (auto-calculated: 33% of wholeTotalTarget),
+  "targetWhole": number (auto-calculated: 67% of wholeTotalTarget),
+  "monthBreakdown": [
+    {
+      "month": "string (e.g., October for Q4)",
+      "targetMRR": number (30% of total MRR for Month 1),
+      "targetWhole": number (30% of total WHOLE for Month 1)
+    },
+    {
+      "month": "string (e.g., November for Q4)",
+      "targetMRR": number (40% of total MRR for Month 2),
+      "targetWhole": number (40% of total WHOLE for Month 2)
+    },
+    {
+      "month": "string (e.g., December for Q4)",
+      "targetMRR": number (30% of total MRR for Month 3),
+      "targetWhole": number (30% of total WHOLE for Month 3)
+    }
+  ]
+}
+
+JavaScript Example (Create New Target):
+---------------------------------------
+fetch('sales-api.php?action=targets', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    rep: "TRM",
+    quarter: "Q4",
+    wholeTotalTarget: 1000000,
+    targetMRR: 330000,      // auto-calculated: 33% of 1000000
+    targetWhole: 670000,    // auto-calculated: 67% of 1000000
+    monthBreakdown: [
+      { month: "October", targetMRR: 99000, targetWhole: 201000 },   // 30%
+      { month: "November", targetMRR: 132000, targetWhole: 268000 }, // 40%
+      { month: "December", targetMRR: 99000, targetWhole: 201000 }   // 30%
+    ]
+  })
+})
+.then(response => response.json())
+.then(data => console.log(data));
+
+JavaScript Example (Update Existing Target):
+--------------------------------------------
+fetch('sales-api.php?action=targets', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    id: "target-001",
+    rep: "TRM",
+    quarter: "Q4",
+    wholeTotalTarget: 1200000,
+    targetMRR: 396000,
+    targetWhole: 804000,
+    monthBreakdown: [
+      { month: "October", targetMRR: 118800, targetWhole: 241200 },
+      { month: "November", targetMRR: 158400, targetWhole: 321600 },
+      { month: "December", targetMRR: 118800, targetWhole: 241200 }
+    ]
+  })
+})
+.then(response => response.json())
+.then(data => console.log(data));
+
+--------------------------------------------------------------------------------
+RESPONSE PAYLOAD (Success)
+--------------------------------------------------------------------------------
+
+{
+  "success": true,
+  "message": "Target saved successfully",
+  "data": {
+    "id": "target-001",
+    "rep": "TRM",
+    "quarter": "Q4",
+    "wholeTotalTarget": 1000000,
+    "targetMRR": "₹3.30L",
+    "targetWhole": "₹6.70L",
+    "monthBreakdown": [
+      {
+        "month": "October",
+        "targetMRR": "₹0.99L",
+        "targetWhole": "₹2.01L",
+        "achievedMRR": "₹0",
+        "achievedWhole": "₹0",
+        "achievement": "0%",
+        "status": "Behind"
+      },
+      {
+        "month": "November",
+        "targetMRR": "₹1.32L",
+        "targetWhole": "₹2.68L",
+        "achievedMRR": "₹0",
+        "achievedWhole": "₹0",
+        "achievement": "0%",
+        "status": "Behind"
+      },
+      {
+        "month": "December",
+        "targetMRR": "₹0.99L",
+        "targetWhole": "₹2.01L",
+        "achievedMRR": "₹0",
+        "achievedWhole": "₹0",
+        "achievement": "0%",
+        "status": "Behind"
+      }
+    ]
+  }
+}
+
+================================================================================
+PUT - UPDATE ACHIEVED VALUES
+================================================================================
+
+ENDPOINT
+--------
+URL:        sales-api.php?action=targets&id={target_id}
+Method:     PUT
+Content-Type: application/json
+
+Use this endpoint to update achieved values (MRR and WHOLE) for a target.
+Status is auto-calculated based on achievement percentage.
+
+--------------------------------------------------------------------------------
+REQUEST PAYLOAD
+--------------------------------------------------------------------------------
+
+{
+  "month": "string (required) - Month to update",
+  "achievedMRR": number (required) - Achieved MRR amount in INR,
+  "achievedWhole": number (required) - Achieved WHOLE amount in INR
+}
+
+Status Auto-Calculation Rules:
+- Achievement % = (achievedMRR + achievedWhole) / (targetMRR + targetWhole) * 100
+- 50% to 70%: "On Track"
+- Below 40%: "Behind"
+- 40% to 49% or above 70%: "At Risk"
+
+JavaScript Example:
+-------------------
+fetch('sales-api.php?action=targets&id=target-001', {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    month: "October",
+    achievedMRR: 85000,
+    achievedWhole: 180000
+  })
+})
+.then(response => response.json())
+.then(data => console.log(data));
+
+--------------------------------------------------------------------------------
+RESPONSE PAYLOAD (Success)
+--------------------------------------------------------------------------------
+
+{
+  "success": true,
+  "message": "Achieved values updated successfully",
+  "data": {
+    "month": "October",
+    "targetMRR": "₹0.99L",
+    "targetWhole": "₹2.01L",
+    "achievedMRR": "₹0.85L",
+    "achievedWhole": "₹1.80L",
+    "achievement": "88%",
+    "status": "At Risk"
+  }
+}
+
+================================================================================
+DELETE - REMOVE SALES TARGET
+================================================================================
+
+ENDPOINT
+--------
+URL:        sales-api.php?action=targets&id={target_id}
+Method:     DELETE
+
+JavaScript Example:
+-------------------
+fetch('sales-api.php?action=targets&id=target-001', {
+  method: 'DELETE'
+})
+.then(response => response.json())
+.then(data => console.log(data));
+
+--------------------------------------------------------------------------------
+RESPONSE PAYLOAD (Success)
+--------------------------------------------------------------------------------
+
+{
+  "success": true,
+  "message": "Target deleted successfully"
+}
+
+================================================================================
+GET - FILTER SALES TARGETS BY PERIOD
+================================================================================
+
+ENDPOINT
+--------
+URL:        sales-api.php?action=targets&filter={period}
+Method:     GET
+Parameters:
+  - filter (required): "yearly", "monthly", "quarterly", "Q1", "Q2", "Q3", "Q4"
+
+JavaScript Example:
+-------------------
+fetch('sales-api.php?action=targets&filter=Q4')
+  .then(response => response.json())
+  .then(data => console.log(data));
+
+--------------------------------------------------------------------------------
+RESPONSE PAYLOAD
+--------------------------------------------------------------------------------
+
+{
+  "salesTargets": [
+    {
+      "id": "target-001",
+      "rep": "TRM",
+      "quarter": "Q4",
+      "month": "October",
+      "targetWhole": "₹2.01L",
+      "targetMRR": "₹0.99L",
+      "achievedWhole": "₹1.80L",
+      "achievedMRR": "₹0.85L",
+      "achievement": "88%",
+      "status": "At Risk"
+    },
+    {
+      "id": "target-002",
+      "rep": "TRM",
+      "quarter": "Q4",
+      "month": "November",
+      "targetWhole": "₹2.68L",
+      "targetMRR": "₹1.32L",
+      "achievedWhole": "₹1.50L",
+      "achievedMRR": "₹0.70L",
+      "achievement": "55%",
+      "status": "On Track"
+    }
+  ],
+  "filter": "Q4"
+}
+
+================================================================================
+FORM FIELDS FOR EDIT TARGET POPUP (SIMPLIFIED)
+================================================================================
+
+The edit target popup form now contains only 3 input fields:
+
+| Field Name        | Type     | Required | Description                              |
+|-------------------|----------|----------|------------------------------------------|
+| rep               | text     | Yes      | Sales representative code/name           |
+| quarter           | select   | Yes      | Q1, Q2, Q3, Q4                           |
+| wholeTotalTarget  | number   | Yes      | Combined target (MRR + WHOLE) in INR     |
+
+All other fields are auto-calculated:
+- Target MRR = 33% of wholeTotalTarget
+- Target WHOLE = 67% of wholeTotalTarget
+- Month-wise distribution: Month 1 = 30%, Month 2 = 40%, Month 3 = 30%
+- Status = Based on achievement % (50-70% = On Track, <40% = Behind, else At Risk)
+
+================================================================================
+CALCULATION FORMULAS
+================================================================================
+
+TARGET BREAKDOWN:
+- Target MRR = wholeTotalTarget × 0.33 (33%)
+- Target WHOLE = wholeTotalTarget × 0.67 (67%)
+
+MONTH-WISE DISTRIBUTION (for each quarter):
+- Month 1 = 30% of respective total (MRR or WHOLE)
+- Month 2 = 40% of respective total (MRR or WHOLE)
+- Month 3 = 30% of respective total (MRR or WHOLE)
+
+QUARTER TO MONTHS MAPPING:
+- Q1: January (30%), February (40%), March (30%)
+- Q2: April (30%), May (40%), June (30%)
+- Q3: July (30%), August (40%), September (30%)
+- Q4: October (30%), November (40%), December (30%)
+
+STATUS CALCULATION (based on achievement %):
+- Achievement % = ((achievedMRR + achievedWhole) / (targetMRR + targetWhole)) × 100
+- 50% to 70% → "On Track"
+- Below 40% → "Behind"
+- 40% to 49% OR above 70% → "At Risk"
+
+================================================================================
+FILTER DROPDOWN VALUES
+================================================================================
+
+For period filter dropdown:
+- "yearly"    - Show all targets for current year
+- "monthly"   - Show all targets grouped by month
+- "quarterly" - Show all targets grouped by quarter
+- "Q1"        - Show Q1 targets (Jan, Feb, Mar)
+- "Q2"        - Show Q2 targets (Apr, May, Jun)
+- "Q3"        - Show Q3 targets (Jul, Aug, Sep)
+- "Q4"        - Show Q4 targets (Oct, Nov, Dec)
+
+================================================================================
+QUARTER VALUES
+================================================================================
+
+For quarter field:
+- "Q1" - January, February, March
+- "Q2" - April, May, June
+- "Q3" - July, August, September
+- "Q4" - October, November, December
+
+================================================================================
+TARGET STATUS VALUES
+================================================================================
+
+Status is auto-calculated based on achievement percentage:
+- "On Track" - Achievement between 50% and 70%
+- "Behind"   - Achievement less than 40%
+- "At Risk"  - Achievement 40-49% or above 70%
+
+================================================================================
+ERROR RESPONSE
+================================================================================
+
+{
+  "error": true,
+  "message": "Error description"
+}
+
+HTTP Status Codes:
+- 200: Success
+- 201: Created (for new target)
+- 400: Bad Request (validation error)
+- 404: Not Found (target not found for update/delete)
+- 500: Internal Server Error
+
+================================================================================

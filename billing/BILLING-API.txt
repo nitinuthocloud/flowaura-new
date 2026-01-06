@@ -1,0 +1,651 @@
+================================================================================
+                    BILLING & COLLECTIONS DASHBOARD API DOCUMENTATION
+================================================================================
+
+ENDPOINT
+--------
+URL:        billing-api.php
+Method:     GET
+Parameters: 
+  - period (optional): "7days", "15days", "30days", "90days"
+
+================================================================================
+REQUEST
+================================================================================
+
+GET /billing-api.php?period=30days HTTP/1.1
+Host: your-domain.com
+Content-Type: application/json
+
+JavaScript Example:
+-------------------
+fetch('billing-api.php?period=30days')
+  .then(response => response.json())
+  .then(data => console.log(data));
+
+================================================================================
+RESPONSE PAYLOAD
+================================================================================
+
+{
+  "kpis": {
+    "totalInvoiced": {
+      "value": "string",
+      "trend": "string"
+    },
+    "totalCollected": {
+      "value": "string",
+      "subtitle": "string"
+    },
+    "pendingReceivables": {
+      "value": "string",
+      "customerCount": number
+    },
+    "overdueAmount": {
+      "value": "string",
+      "avgDaysOverdue": number
+    },
+    "refundsCredits": {
+      "value": "string",
+      "refundRate": "string"
+    },
+    "netRealizedRevenue": {
+      "value": "string",
+      "subtitle": "string"
+    },
+    "gstCollected": {
+      "value": "string",
+      "percentOfInvoiced": "string"
+    },
+    "badDebts": {
+      "value": "string",
+      "writeOffPercent": "string"
+    }
+  },
+
+  "collectionEfficiency": {
+    "collectionRate": "string",
+    "avgCollectionPeriod": "string",
+    "totalOverdue": "string"
+  },
+
+  "gstSummary": {
+    "gstRegisteredB2B": {
+      "amount": "string",
+      "invoiceCount": number,
+      "gstAmount": "string"
+    },
+    "unregisteredB2C": {
+      "amount": "string",
+      "invoiceCount": number,
+      "gstAmount": "string"
+    },
+    "overseas": {
+      "amount": "string",
+      "invoiceCount": number,
+      "gstAmount": "string"
+    }
+  },
+
+  "highRiskCustomers": [
+    {
+      "name": "string",
+      "overdueCount": number,
+      "refundRequests": number,
+      "avgDelay": number
+    }
+  ],
+
+  "salesVsCollection": {
+    "labels": ["string"],
+    "invoiced": [number],
+    "collected": [number],
+    "pending": [number]
+  },
+
+  "agingBuckets": [
+    {
+      "label": "string",
+      "amount": "string",
+      "color": "string"
+    }
+  ],
+
+  "collectionTrend": {
+    "labels": ["string"],
+    "data": [number]
+  },
+
+  "refundMetrics": {
+    "totalRefunds": "string",
+    "refundCount": number,
+    "refundRate": "string",
+    "reasons": {
+      "labels": ["string"],
+      "values": [number]
+    }
+  },
+
+  "productRevenue": {
+    "labels": ["string"],
+    "invoiced": [number],
+    "collected": [number]
+  },
+
+  "overdueDetails": [
+    {
+      "invoiceDate": "string",
+      "customer": "string",
+      "type": "string",
+      "typeClass": "string",
+      "invoiceNo": "string",
+      "dueDate": "string",
+      "amount": "string",
+      "paid": "string",
+      "outstanding": "string",
+      "daysOverdue": number,
+      "status": "string",
+      "statusClass": "string"
+    }
+  ],
+
+  "refundDetails": [
+    {
+      "date": "string",
+      "customer": "string",
+      "invoiceNo": "string",
+      "refundId": "string",
+      "amount": "string",
+      "reason": "string",
+      "processedBy": "string",
+      "status": "string",
+      "statusClass": "string"
+    }
+  ],
+
+  "gstDetails": [
+    {
+      "invoiceNo": "string",
+      "customer": "string",
+      "type": "string",
+      "typeClass": "string",
+      "placeOfSupply": "string",
+      "taxableValue": "string",
+      "cgst": "string",
+      "sgst": "string",
+      "igst": "string",
+      "category": "string"
+    }
+  ],
+
+  "customerHealth": [
+    {
+      "name": "string",
+      "mrr": "string",
+      "healthScore": number,
+      "avgDelay": number,
+      "totalOverdues": "string",
+      "refundCount": number,
+      "riskLevel": "string",
+      "riskClass": "string"
+    }
+  ],
+
+  "teamPerformance": [
+    {
+      "name": "string",
+      "invoices": number,
+      "amount": "string",
+      "collections": "string",
+      "reminders": number,
+      "refunds": number,
+      "errors": number,
+      "invoiceTime": number,
+      "paymentTime": number
+    }
+  ],
+
+  "alerts": [
+    {
+      "title": "string",
+      "description": "string",
+      "severity": "string",
+      "action": "string"
+    }
+  ]
+}
+
+================================================================================
+SAMPLE RESPONSE
+================================================================================
+
+{
+  "kpis": {
+    "totalInvoiced": {
+      "value": "₹52.8L",
+      "trend": "+12.5% vs last month"
+    },
+    "totalCollected": {
+      "value": "₹48.9L",
+      "subtitle": "92.6% collection rate"
+    },
+    "pendingReceivables": {
+      "value": "₹8.2L",
+      "customerCount": 42
+    },
+    "overdueAmount": {
+      "value": "₹4.0L",
+      "avgDaysOverdue": 45
+    },
+    "refundsCredits": {
+      "value": "₹2.1L",
+      "refundRate": "4.3%"
+    },
+    "netRealizedRevenue": {
+      "value": "₹46.8L",
+      "subtitle": "After refunds"
+    },
+    "gstCollected": {
+      "value": "₹9.5L",
+      "percentOfInvoiced": "18%"
+    },
+    "badDebts": {
+      "value": "₹0.5L",
+      "writeOffPercent": "1.1%"
+    }
+  },
+
+  "collectionEfficiency": {
+    "collectionRate": "94.5%",
+    "avgCollectionPeriod": "23 days",
+    "totalOverdue": "₹4.0L"
+  },
+
+  "gstSummary": {
+    "gstRegisteredB2B": {
+      "amount": "₹32.5L",
+      "invoiceCount": 156,
+      "gstAmount": "₹5.85L"
+    },
+    "unregisteredB2C": {
+      "amount": "₹14.8L",
+      "invoiceCount": 89,
+      "gstAmount": "₹2.66L"
+    },
+    "overseas": {
+      "amount": "₹5.5L",
+      "invoiceCount": 34,
+      "gstAmount": "₹0"
+    }
+  },
+
+  "highRiskCustomers": [
+    {
+      "name": "StartupHub",
+      "overdueCount": 5,
+      "refundRequests": 4,
+      "avgDelay": 52
+    },
+    {
+      "name": "InnovateTech Ltd",
+      "overdueCount": 6,
+      "refundRequests": 3,
+      "avgDelay": 67
+    }
+  ],
+
+  "salesVsCollection": {
+    "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    "invoiced": [45, 52, 48, 55, 50, 53],
+    "collected": [42, 48, 45, 52, 47, 49],
+    "pending": [3, 4, 3, 3, 3, 4]
+  },
+
+  "agingBuckets": [
+    { "label": "0-30 days", "amount": "1.2", "color": "#10b981" },
+    { "label": "31-60 days", "amount": "1.5", "color": "#f59e0b" },
+    { "label": "61-90 days", "amount": "0.8", "color": "#f97316" },
+    { "label": ">90 days", "amount": "0.5", "color": "#ef4444" }
+  ],
+
+  "collectionTrend": {
+    "labels": ["Week 1", "Week 2", "Week 3", "Week 4"],
+    "data": [92, 94, 91, 95]
+  },
+
+  "refundMetrics": {
+    "totalRefunds": "₹2.1L",
+    "refundCount": 27,
+    "refundRate": "4.3%",
+    "reasons": {
+      "labels": ["Service Issue", "Billing Error", "Downtime Credit", "Cancellation", "Other"],
+      "values": [8, 6, 5, 5, 3]
+    }
+  },
+
+  "productRevenue": {
+    "labels": ["VMs", "Kubernetes", "Storage", "Databases", "Load Balancer", "DR & Backup"],
+    "invoiced": [18, 12, 8, 6, 5, 4],
+    "collected": [17, 11, 7, 6, 5, 3]
+  },
+
+  "overdueDetails": [
+    {
+      "invoiceDate": "2024-01-05",
+      "customer": "TechStart Inc",
+      "type": "Enterprise",
+      "typeClass": "enterprise",
+      "invoiceNo": "INV-2024-0145",
+      "dueDate": "2024-01-20",
+      "amount": "85,000",
+      "paid": "0",
+      "outstanding": "85,000",
+      "daysOverdue": 45,
+      "status": "Critical",
+      "statusClass": "critical"
+    },
+    {
+      "invoiceDate": "2024-01-12",
+      "customer": "CloudFirst Solutions",
+      "type": "SMB",
+      "typeClass": "smb",
+      "invoiceNo": "INV-2024-0178",
+      "dueDate": "2024-01-27",
+      "amount": "42,500",
+      "paid": "20,000",
+      "outstanding": "22,500",
+      "daysOverdue": 38,
+      "status": "High",
+      "statusClass": "high"
+    },
+    {
+      "invoiceDate": "2024-01-18",
+      "customer": "DataWave Ltd",
+      "type": "Startup",
+      "typeClass": "startup",
+      "invoiceNo": "INV-2024-0201",
+      "dueDate": "2024-02-02",
+      "amount": "28,000",
+      "paid": "0",
+      "outstanding": "28,000",
+      "daysOverdue": 32,
+      "status": "Medium",
+      "statusClass": "medium"
+    }
+  ],
+
+  "refundDetails": [
+    {
+      "date": "2024-02-10",
+      "customer": "StartupHub",
+      "invoiceNo": "INV-2024-0089",
+      "refundId": "REF-2024-0027",
+      "amount": "15,000",
+      "reason": "Service Issue",
+      "processedBy": "Rahul Verma",
+      "status": "Completed",
+      "statusClass": "success"
+    },
+    {
+      "date": "2024-02-08",
+      "customer": "CloudFirst Solutions",
+      "invoiceNo": "INV-2024-0156",
+      "refundId": "REF-2024-0026",
+      "amount": "8,500",
+      "reason": "Billing Error",
+      "processedBy": "Priya Sharma",
+      "status": "Completed",
+      "statusClass": "success"
+    },
+    {
+      "date": "2024-02-05",
+      "customer": "TechWave India",
+      "invoiceNo": "INV-2024-0134",
+      "refundId": "REF-2024-0025",
+      "amount": "12,000",
+      "reason": "Downtime Credit",
+      "processedBy": "Amit Patel",
+      "status": "Processing",
+      "statusClass": "warning"
+    }
+  ],
+
+  "gstDetails": [
+    {
+      "invoiceNo": "INV-2024-0245",
+      "customer": "TechStart Inc",
+      "type": "Registered",
+      "typeClass": "b2b",
+      "placeOfSupply": "Karnataka",
+      "taxableValue": "85,000",
+      "cgst": "7,650",
+      "sgst": "7,650",
+      "igst": "0",
+      "category": "B2B"
+    },
+    {
+      "invoiceNo": "INV-2024-0246",
+      "customer": "CloudFirst Solutions",
+      "type": "Registered",
+      "typeClass": "b2b",
+      "placeOfSupply": "Maharashtra",
+      "taxableValue": "42,500",
+      "cgst": "0",
+      "sgst": "0",
+      "igst": "7,650",
+      "category": "B2B"
+    },
+    {
+      "invoiceNo": "INV-2024-0247",
+      "customer": "John Smith LLC",
+      "type": "Export",
+      "typeClass": "export",
+      "placeOfSupply": "USA",
+      "taxableValue": "1,25,000",
+      "cgst": "0",
+      "sgst": "0",
+      "igst": "0",
+      "category": "Export"
+    },
+    {
+      "invoiceNo": "INV-2024-0248",
+      "customer": "Local Startup",
+      "type": "Unregistered",
+      "typeClass": "b2c",
+      "placeOfSupply": "Karnataka",
+      "taxableValue": "18,000",
+      "cgst": "1,620",
+      "sgst": "1,620",
+      "igst": "0",
+      "category": "B2C"
+    }
+  ],
+
+  "customerHealth": [
+    {
+      "name": "TechStart Inc",
+      "mrr": "85,000",
+      "healthScore": 92,
+      "avgDelay": 5,
+      "totalOverdues": "0",
+      "refundCount": 0,
+      "riskLevel": "Low",
+      "riskClass": "low"
+    },
+    {
+      "name": "CloudFirst Solutions",
+      "mrr": "42,500",
+      "healthScore": 78,
+      "avgDelay": 12,
+      "totalOverdues": "22,500",
+      "refundCount": 1,
+      "riskLevel": "Medium",
+      "riskClass": "medium"
+    },
+    {
+      "name": "StartupHub",
+      "mrr": "28,000",
+      "healthScore": 45,
+      "avgDelay": 52,
+      "totalOverdues": "85,000",
+      "refundCount": 4,
+      "riskLevel": "High",
+      "riskClass": "high"
+    },
+    {
+      "name": "InnovateTech Ltd",
+      "mrr": "35,000",
+      "healthScore": 38,
+      "avgDelay": 67,
+      "totalOverdues": "1,20,000",
+      "refundCount": 3,
+      "riskLevel": "Critical",
+      "riskClass": "critical"
+    }
+  ],
+
+  "teamPerformance": [
+    {
+      "name": "Rahul Verma",
+      "invoices": 45,
+      "amount": "18.5L",
+      "collections": "17.2L",
+      "reminders": 12,
+      "refunds": 3,
+      "errors": 1,
+      "invoiceTime": 1.2,
+      "paymentTime": 18
+    },
+    {
+      "name": "Priya Sharma",
+      "invoices": 38,
+      "amount": "15.2L",
+      "collections": "14.8L",
+      "reminders": 8,
+      "refunds": 2,
+      "errors": 0,
+      "invoiceTime": 0.8,
+      "paymentTime": 15
+    },
+    {
+      "name": "Amit Patel",
+      "invoices": 42,
+      "amount": "19.1L",
+      "collections": "16.9L",
+      "reminders": 15,
+      "refunds": 4,
+      "errors": 3,
+      "invoiceTime": 1.5,
+      "paymentTime": 22
+    }
+  ],
+
+  "alerts": [
+    {
+      "title": "Large Overdue Amount",
+      "description": "InnovateTech Ltd has ₹1.2L overdue for 67+ days. Immediate escalation recommended.",
+      "severity": "High",
+      "action": "Contact Customer"
+    },
+    {
+      "title": "GST Filing Deadline",
+      "description": "GSTR-1 filing due in 3 days. 12 invoices pending reconciliation.",
+      "severity": "Medium",
+      "action": "Review Invoices"
+    },
+    {
+      "title": "High Refund Rate",
+      "description": "StartupHub has 4 refund requests this month (14% rate). Review service quality.",
+      "severity": "Medium",
+      "action": "Investigate"
+    },
+    {
+      "title": "Payment Reminder",
+      "description": "5 customers have payments due within next 7 days totaling ₹3.2L.",
+      "severity": "Low",
+      "action": "Send Reminders"
+    }
+  ]
+}
+
+================================================================================
+STATUS CLASS VALUES
+================================================================================
+
+For overdueDetails status:
+- "critical" - >60 days overdue (red)
+- "high" - 31-60 days overdue (orange)
+- "medium" - 15-30 days overdue (yellow)
+- "low" - <15 days overdue (blue)
+
+For customerHealth riskLevel:
+- "critical" - Health score <40
+- "high" - Health score 40-59
+- "medium" - Health score 60-79
+- "low" - Health score 80+
+
+For refundDetails status:
+- "success" - Completed
+- "warning" - Processing
+- "danger" - Failed/Rejected
+
+For gstDetails type:
+- "b2b" - GST Registered Business
+- "b2c" - Unregistered Consumer
+- "export" - Overseas/Export
+
+================================================================================
+CUSTOMER TYPE VALUES
+================================================================================
+
+For overdueDetails type:
+- "Enterprise"
+- "SMB"
+- "Startup"
+- "Individual"
+
+================================================================================
+REFUND REASON VALUES
+================================================================================
+
+- "Service Issue"
+- "Billing Error"
+- "Downtime Credit"
+- "Cancellation"
+- "Other"
+
+================================================================================
+ALERT SEVERITY VALUES
+================================================================================
+
+- "High" - Requires immediate action
+- "Medium" - Needs attention soon
+- "Low" - Informational
+
+================================================================================
+PRODUCT LABELS
+================================================================================
+
+For productRevenue chart:
+- "VMs"
+- "Kubernetes"
+- "Storage"
+- "Databases"
+- "Load Balancer"
+- "DR & Backup"
+
+================================================================================
+ERROR RESPONSE
+================================================================================
+
+{
+  "error": true,
+  "message": "Error description"
+}
+
+HTTP Status Codes:
+- 200: Success
+- 400: Bad Request
+- 500: Internal Server Error
+
+================================================================================
