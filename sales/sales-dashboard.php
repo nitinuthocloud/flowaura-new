@@ -379,6 +379,46 @@
             opacity: 1;
         }
 
+        /* Sidebars container */
+        .sidebars-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        /* Ensure proper layering when both are open */
+        #sidebar.open {
+            right: 0;
+            z-index: 1000;
+        }
+
+        #itemsSidebar.active {
+            right: 0;
+            margin-left: -100px;
+            /* Adjust based on your design */
+            z-index: 1001;
+        }
+
+        /* Adjust for responsive design */
+        @media (max-width: 768px) {
+            .right-sidebar {
+                width: 100% !important;
+                right: -100%;
+            }
+
+            .right-sidebar.open {
+                right: 0;
+                width: 100% !important;
+            }
+
+            #itemsSidebar.active {
+                width: 100% !important;
+                right: 0;
+                margin-left: 0;
+            }
+        }
+
         /* Form styles */
         .form-group {
             margin-bottom: 1rem;
@@ -999,8 +1039,7 @@
             font-size: 12px;
         }
 
-        /* Sidebar Styles */
-        .sidebar {
+        .right-sidebar {
             position: fixed;
             top: 0;
             right: -600px;
@@ -1011,6 +1050,11 @@
             transition: right 0.3s ease;
             z-index: 1000;
             overflow-y: auto;
+        }
+
+        .right-sidebar.open {
+            right: 0;
+            width: 65% !important
         }
 
         .sidebar.open {
@@ -1583,6 +1627,58 @@
             font-weight: 500;
         }
 
+        /* Right Sidebar Container */
+        .right-sidebar {
+            position: fixed;
+            top: 0;
+            right: -65%;
+            width: 600px;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .right-sidebar.open {
+            right: 0;
+            width: 65% !important;
+        }
+
+        /* Invoice Items Sidebar (child of right sidebar) */
+        #itemsSidebar {
+            position: fixed;
+            top: 0;
+            right: -600px;
+            width: 600px;
+            height: 100vh;
+            background: white;
+            box-shadow: -4px 0 16px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            /* Higher than right-sidebar */
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+
+        #itemsSidebar.active {
+            right: 0;
+        }
+
+        /* When itemsSidebar is active, adjust main sidebar to 35% width */
+        /* .right-sidebar.open+#itemsSidebar.active {
+            right: calc(35% + 20px);
+        } */
+
+        /* Or if you want it to open on top: */
+
+        #itemsSidebar.active {
+            right: 0;
+            width: 65%;
+            z-index: 1002;
+        }
+
+
         .sidebar-tabs {
             display: flex;
             border-bottom: 1px solid var(--border-color);
@@ -1769,7 +1865,7 @@
         }
 
         @media (max-width: 768px) {
-            .sidebar {
+            .main-sidebar {
                 transform: translateX(-100%);
             }
 
@@ -1823,7 +1919,7 @@ $staffList = $person['available_staff'] ?? [];
 
 <body>
     <!-- Sidebar -->
-    <?php //include "../sidebar.php"; ?>
+    <?php include "../sidebar.php"; ?>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -2252,47 +2348,44 @@ $staffList = $person['available_staff'] ?? [];
     </div>
 
 
-    <!-- Cards sidebar -->
-    <div id="sidebar" class="sidebar">
-        <div class="sidebar-header d-flex justify-content-between align-items-center">
-            <h5 id="sidebar-title">Exclude Invoices</h5>
-
-            <div class="d-flex align-items-center gap-2">
-                <button id="invoiceToggleBtn" class="btn btn-primary" onclick="toggleInvoice()">
-                    Include Invoices
-                </button>
-
-                <button class="close-btn" id="sidebar-close">×</button>
+    <!-- Sidebars Container -->
+    <div class="sidebars-container">
+        <!-- Main Cards Sidebar -->
+        <div id="sidebar" class="right-sidebar">
+            <div class="sidebar-header d-flex justify-content-between align-items-center">
+                <h5 id="sidebar-title">Exclude Invoices</h5>
+                <div class="d-flex align-items-center gap-2">
+                    <button id="invoiceToggleBtn" class="btn btn-primary" onclick="toggleInvoice()">
+                        Include Invoices
+                    </button>
+                    <button class="close-btn" id="sidebar-close">×</button>
+                </div>
+            </div>
+            <div class="sidebar-content">
+                <div class="table-responsive">
+                    <table id="sidebar-table" class="table table-striped table-hover">
+                        <thead id="sidebar-table-header"></thead>
+                        <tbody id="sidebar-table-body"></tbody>
+                    </table>
+                </div>
+                <div id="loading" style="display:none;">Loading...</div>
             </div>
         </div>
 
-        <div class="sidebar-content">
-            <div class="table-responsive">
-                <table id="sidebar-table" class="table table-striped table-hover">
-                    <thead id="sidebar-table-header"></thead>
-                    <tbody id="sidebar-table-body"></tbody>
-                </table>
+        <!-- Invoice Items Sidebar -->
+        <div id="itemsSidebar" class="right-sidebar">
+            <div class="sidebar-header d-flex justify-content-between align-items-center">
+                <h5>Invoice Items</h5>
+                <div class="d-flex align-items-center gap-2">
+                    <button id="toggleInvoiceItemsBtn" class="btn btn-outline-primary" onclick="toggleInvoiceItems()">
+                        Exclude Invoices
+                    </button>
+                    <button class="close-btn" onclick="closeItemsSidebar()">×</button>
+                </div>
             </div>
-
-            <div id="loading" style="display:none;">Loading...</div>
-        </div>
-    </div>
-
-    <!-- Invoice Items Sidebar -->
-    <div id="itemsSidebar" class="sidebar">
-        <div class="sidebar-header d-flex justify-content-between align-items-center">
-            <h5>Invoice Items</h5>
-            <div class="d-flex align-items-center gap-2">
-                <button id="toggleInvoiceItemsBtn" class="btn btn-outline-primary">
-                    Exclude Invoices
-                </button>
-
-                <button class="close-btn" onclick="closeItemsSidebar()">×</button>
+            <div class="sidebar-content">
+                <div id="invoiceItemsContainer"></div>
             </div>
-        </div>
-
-        <div class="sidebar-content">
-            <div id="invoiceItemsContainer"></div>
         </div>
     </div>
 
@@ -2623,7 +2716,7 @@ $staffList = $person['available_staff'] ?? [];
     <?php
 
     ?>
-    <script src="api.js"></script>
+<script src="../api.js"></script>
 
 
     <script>
@@ -2740,22 +2833,22 @@ $staffList = $person['available_staff'] ?? [];
             }
         }
 
-       function softAlert(message, type = 'success', duration = 3000) {
-        const alert = document.createElement('div');
-        alert.className = `soft-alert ${type}`;
-        alert.textContent = message;
+        function softAlert(message, type = 'success', duration = 3000) {
+            const alert = document.createElement('div');
+            alert.className = `soft-alert ${type}`;
+            alert.textContent = message;
 
-        document.body.appendChild(alert);
+            document.body.appendChild(alert);
 
-        // show
-        setTimeout(() => alert.classList.add('show'), 50);
+            // show
+            setTimeout(() => alert.classList.add('show'), 50);
 
-        // hide
-        setTimeout(() => {
-            alert.classList.remove('show');
-            setTimeout(() => alert.remove(), 300);
-        }, duration);
-    }
+            // hide
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => alert.remove(), 300);
+            }, duration);
+        }
 
 
 
@@ -3535,6 +3628,7 @@ $staffList = $person['available_staff'] ?? [];
 
                 // Open sidebar
                 document.getElementById('sidebar').classList.add('open');
+                closeItemsSidebar();
 
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -3545,6 +3639,13 @@ $staffList = $person['available_staff'] ?? [];
                 document.getElementById('sidebar-table-body').innerHTML = errorRow;
             }
         }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            // Also close items sidebar when main closes
+            closeItemsSidebar();
+        }
+
         function formatCurrency(value) {
             if (!value) return '₹ 0';
 
@@ -3759,23 +3860,90 @@ $staffList = $person['available_staff'] ?? [];
                 document.getElementById('sidebar-table').style.display = 'table';
             }
         }
+        // document.addEventListener('click', function (e) {
+        //     const el = e.target.closest('.invoice-amount');
+        //     if (!el) return;
+
+        //     const userId = el.dataset.userid;
+        //     const invoiceId = el.dataset.invoiceid;
+
+        //     fetchInvoiceItems(userId, invoiceId);
+
+        //     openItemsSidebar();
+        // });
+
         document.addEventListener('click', function (e) {
             const el = e.target.closest('.invoice-amount');
             if (!el) return;
 
+            e.stopPropagation(); // Prevent event bubbling
+
             const userId = el.dataset.userid;
             const invoiceId = el.dataset.invoiceid;
 
-            fetchInvoiceItems(userId, invoiceId);
+            currentInvoiceUserId = userId;
+            currentInvoiceId = invoiceId;
 
-            openItemsSidebar();
+            // First open main sidebar if not open
+            if (!document.getElementById('sidebar').classList.contains('open')) {
+                // You might want to open the main sidebar first
+                // or handle this differently based on your requirements
+                return;
+            }
+
+            // Fetch and display invoice items
+            fetchInvoiceItems(userId, invoiceId).then(() => {
+                // Open the items sidebar
+                openItemsSidebar();
+            });
         });
+
         function openItemsSidebar() {
-            document.getElementById('itemsSidebar')?.classList.add('active');
+            // Only open if main sidebar is open
+            const mainSidebar = document.getElementById('sidebar');
+            if (!mainSidebar.classList.contains('open')) {
+                alert('Please open the main sidebar first.');
+                return;
+            }
+
+            // Add active class to items sidebar
+            document.getElementById('itemsSidebar').classList.add('active');
+
+            // Adjust main sidebar width to make room
+            mainSidebar.style.width = '35%';
+            mainSidebar.style.zIndex = '1000';
         }
 
         function closeItemsSidebar() {
-            document.getElementById('itemsSidebar')?.classList.remove('active');
+            const itemsSidebar = document.getElementById('itemsSidebar');
+            const mainSidebar = document.getElementById('sidebar');
+
+            itemsSidebar.classList.remove('active');
+
+            // Reset main sidebar width
+            if (mainSidebar.classList.contains('open')) {
+                mainSidebar.style.width = '65%';
+            }
+        }
+
+        function toggleInvoiceItems() {
+            invoiceItemsInclude = invoiceItemsInclude === 1 ? 0 : 1;
+
+            const btn = document.getElementById('toggleInvoiceItemsBtn');
+            if (invoiceItemsInclude === 1) {
+                btn.innerText = 'Exclude Invoices';
+                btn.classList.remove('btn-outline-primary');
+                btn.classList.add('btn-primary');
+            } else {
+                btn.innerText = 'Include Invoices';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline-primary');
+            }
+
+            // Reload invoice items if we have current invoice data
+            if (currentInvoiceUserId && currentInvoiceId) {
+                fetchInvoiceItems(currentInvoiceUserId, currentInvoiceId);
+            }
         }
 
 
@@ -3975,22 +4143,35 @@ $staffList = $person['available_staff'] ?? [];
         }
 
 
-        // Close sidebar function
+        // // Close sidebar function
 
-        function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('open');
-        }
+        // function closeSidebar() {
+        //     document.getElementById('sidebar').classList.add('open');
+
+        // }
+
 
         // Initialize sidebar close button
         document.getElementById('sidebar-close').addEventListener('click', closeSidebar);
 
+
         // Close sidebar when clicking outside (optional)
         document.addEventListener('click', function (event) {
             const sidebar = document.getElementById('sidebar');
+            const itemsSidebar = document.getElementById('itemsSidebar');
+
             if (sidebar.classList.contains('open') &&
                 !sidebar.contains(event.target) &&
-                !event.target.closest('.stat-card')) {
+                !event.target.closest('.stat-card') &&
+                !itemsSidebar.contains(event.target)) {
                 closeSidebar();
+            }
+
+            // Close items sidebar when clicking outside
+            if (itemsSidebar.classList.contains('active') &&
+                !itemsSidebar.contains(event.target) &&
+                !event.target.closest('.invoice-amount')) {
+                closeItemsSidebar();
             }
         });
 
@@ -5342,7 +5523,7 @@ $staffList = $person['available_staff'] ?? [];
             const targetAmount = document.getElementById('targetAmount').value;
 
             if (!employeeId || !year || !quarter || !targetAmount) {
-                alert("Please fill all required fields");
+                softAlert('Please fill all required fields', 'warning');
                 return;
             }
 
@@ -5372,9 +5553,13 @@ $staffList = $person['available_staff'] ?? [];
                     throw new Error(response?.message || 'Update failed');
                 }
 
-                alert(`Team target ${isEdit ? 'updated' : 'added'} successfully`);
+                // ✅ Soft alert on success
+                softAlert(
+                    `Team target ${isEdit ? 'updated' : 'added'} successfully`,
+                    'success'
+                );
 
-                // Reload table for consistency
+                // Reload table
                 await loadTeamTargets(quarter, year);
 
                 // Reset form & state
@@ -5382,16 +5567,19 @@ $staffList = $person['available_staff'] ?? [];
 
             } catch (error) {
                 console.error(error);
-                alert(error.message || 'Something went wrong');
+
+                // ❌ Soft alert on error
+                softAlert(error.message || 'Something went wrong', 'error');
+
             } finally {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
             }
         }
 
+
         function resetTeamTargetForm() {
             document.getElementById('teamTargetForm').reset();
-
             document.getElementById('teamMemberSelect').disabled = false;
             document.getElementById('targetYear').disabled = false;
             document.getElementById('targetQuarter').disabled = false;
