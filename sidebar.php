@@ -1,7 +1,7 @@
 <!-- Sidebar -->
 <style>
-    /* Sidebar */
-    .sidebar {
+    /* Main Navigation Sidebar */
+    .main-sidebar {
         position: fixed;
         left: 0;
         top: 0;
@@ -10,7 +10,7 @@
         background: #1a1d29;
         color: white;
         overflow-y: auto;
-        z-index: 1000;
+        z-index: 1001;
     }
 
     .sidebar-brand {
@@ -72,8 +72,8 @@
     }
 </style>
 
-<!-- Sidebar -->
-<div class="sidebar">
+<!-- Main Navigation Sidebar -->
+<div class="main-sidebar">
     <div class="sidebar-brand">
         <div class="brand-logo">U</div>
         <div class="brand-text">
@@ -102,7 +102,6 @@
             <span class="nav-icon">💰</span>
             <span>Billing & Finance</span>
         </a>
-
     </nav>
 </div>
 
