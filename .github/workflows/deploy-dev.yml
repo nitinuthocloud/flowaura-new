@@ -1,0 +1,31 @@
+name: Deploy to Dev Server
+
+on:
+  push:
+    branches: [ "dev" ]   # merging into dev causes a push to dev, so this triggers
+
+concurrency:
+  group: deploy-dev
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, dev-server]
+
+    steps:
+      - name: Deploy by pulling latest code into /var/www/html
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cd /var/www/html
+
+          # Make sure we are on dev branch
+          git fetch origin dev
+          git checkout dev
+
+          # Hard reset to exactly match origin/dev (clean & reliable deploy)
+          git reset --hard origin/dev
+
+          # Reload apache (optional)
+          sudo systemctl reload apache2
